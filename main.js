@@ -90,7 +90,7 @@ function createPost(){
                 </div>
                 <div class="post-meta__data">
                     <div class="post-meta__author">${item.author.name}</div>
-                    <div class="post-meta__time">4 mesi fa</div>
+                    <div class="post-meta__time">${item.created}</div>
                 </div>                    
             </div>
         `
@@ -126,6 +126,14 @@ button.forEach((item, index) =>{
         const verde = document.getElementsByClassName('like-button')
         let green = [...verde]
         green[index].classList.add('like-button--liked')
+        this.addEventListener('click', function remove(){
+            posts[index].likes--
+            likes[index].innerHTML = ''
+            footer(posts[index], postArray[index])
+            const verde = document.getElementsByClassName('like-button')
+            let green = [...verde]
+            green[index].classList.remove('like-button--liked')
+        })
     })
 })
 
