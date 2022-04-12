@@ -57,7 +57,7 @@ const posts = [
 ];
 
 // funzione che mi servirà per cambiare i likes
-function footer(item, box){
+function footer(item, box) {
     let footer = document.createElement('div')
     footer.setAttribute('class', 'post_footer')
     footer.innerHTML = ''
@@ -69,16 +69,23 @@ function footer(item, box){
                     <span class="like-button__label">Mi Piace</span>
                 </a>
             </div>
-            <div class="likes__counter"> Piace a <b id="like-counter-1" class="js-likes-counter">${item.likes}</b> persone</div>
+            <div class="likes__counter"> Piace a <b id="like-counter-${item.id}" class="js-likes-counter">${item.likes}</b> persone</div>
         </div> 
     `
     box.append(footer)
 }
-
+// funzione di conversione delle date
+function date() {
+    posts.forEach((item) => {
+        item.created.split('')
+        console.log(item.created)
+    })
+}
+date()
 // funzione di creazione dei post 
-function createPost(){
+function createPost() {
     const container = document.getElementById('container')
-    posts.forEach((item) =>{
+    posts.forEach((item) => {
         let box = document.createElement('div')
         box.setAttribute('class', 'post')
         let top = document.createElement('div')
@@ -108,32 +115,29 @@ function createPost(){
         footer(item, box)
     })
 }
-
 createPost()
 // addEventListener
 const box = document.getElementsByClassName('post')
 const footerCont = document.getElementsByClassName('likes')
-const like = document.getElementsByClassName('likes__cta')
+const like = document.getElementsByClassName('like-button')
 let postArray = [...box]
 let likes = [...footerCont]
 let button = [...like]
 
-button.forEach((item, index) =>{
-    item.addEventListener('click', function add(){
-        posts[index].likes++
-        likes[index].innerHTML = ''
-        footer(posts[index], postArray[index])
-        const verde = document.getElementsByClassName('like-button')
-        let green = [...verde]
-        green[index].classList.add('like-button--liked')
-        this.addEventListener('click', function remove(){
+button.forEach((item, index) => {
+    let number = document.getElementById(`like-counter-${posts[index].id}`)
+    console.log(number)
+    item.addEventListener('click', function () {
+        // creo gli if
+        if (item.classList.contains('like-button--liked')) {
             posts[index].likes--
-            likes[index].innerHTML = ''
-            footer(posts[index], postArray[index])
-            const verde = document.getElementsByClassName('like-button')
-            let green = [...verde]
-            green[index].classList.remove('like-button--liked')
-        })
+            number.innerHTML = `${posts[index].likes}`
+            item.classList.remove('like-button--liked')
+        } else if (!item.classList.contains('like-button--liked')) {
+            posts[index].likes++
+            number.innerHTML = `${posts[index].likes}`
+            item.classList.add('like-button--liked')
+        }
     })
 })
 
